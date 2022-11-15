@@ -140,6 +140,67 @@ app.get("/services/:id", async (req, res) => {
     }
 });
 
+app.delete("/reviewsubmit/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await Reviewsubmit.deleteOne({ _id: ObjectId(id) });
+        if (result.deletedCount) {
+            res.send({
+                success: true,
+                message: `Successfully deleted the comment`
+            })
+        } else {
+
+        }
+    } catch (error) {
+        res.send({
+            success: false,
+            error: error.message
+        });
+
+    }
+})
+
+app.get("/reviewsubmit/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+
+        const results = await Reviewsubmit.findOne({ _id: ObjectId(id) });
+        res.send({
+            success: true,
+            data: results
+        });
+    } catch (error) {
+        res.send({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+app.patch("/reviewsubmit/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await Reviewsubmit.updateOne({ _id: ObjectId(id) }, { $set: req.body });
+        if (result.matchedCount) {
+            res.send({
+                success: true,
+                message: `successfully update`
+            });
+        } else {
+            res.send({
+                success: false,
+                error: "Not update"
+            });
+        }
+    } catch (error) {
+        res.send({
+            success: false,
+            error: error.message,
+        });
+    }
+});
 
 
 app.listen(5000, () => console.log('server up and running'))
